@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrabalHousing Pvt. Ltd. — Online CRM</title>
+<style>
+:root{--navy:#0E2A47;--gold:#C9A227;--bg:#F4F1EA;--card:#fffdf8;--text:#1B2631;--muted:#6B7280;--ok:#1F8A5B;--bad:#C0392B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Segoe UI,system-ui,sans-serif;background:linear-gradient(#F7F4EE,#EFE8DA);color:var(--text);min-height:100vh}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0E2A47,#1A4A73)}
+.box{background:#fff;width:100%;max-width:420px;border-radius:16px;padding:32px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.box h1{color:var(--navy);font-size:1.35rem}
+.sub{color:var(--muted);font-size:.85rem;margin:6px 0 18px}
+label{display:block;font-size:.78rem;font-weight:600;margin:10px 0 4px}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid #e4dcc8;border-radius:8px;font:inherit}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer}
+.btn-p{background:var(--navy);color:#fff}
+.btn-g{background:var(--ok);color:#fff}
+.btn-o{background:#fff;border:1px solid #e4dcc8}
+.err{display:none;background:#fadbd8;color:#922B21;padding:8px 10px;border-radius:8px;margin-bottom:10px}
+.app{display:none}
+.header{background:linear-gradient(135deg,#0E2A47,#1A4A73);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.nav{background:#fff;display:flex;gap:6px;padding:8px 12px;overflow:auto;border-bottom:1px solid #e4dcc8}
+.nav button{background:none;border:0;padding:8px 10px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.nav button.on{color:var(--navy);font-weight:700;border-bottom:2px solid var(--gold)}
+.main{max-width:1100px;margin:0 auto;padding:18px}
+.card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 8px 24px rgba(14,42,71,.08)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:#fff;border-left:4px solid var(--navy);padding:12px;border-radius:10px}
+.kpi b{display:block;font-size:1.4rem;color:var(--navy)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{background:var(--navy);color:#fff;text-align:left;padding:8px}
+td{padding:8px;border-bottom:1px solid #eee}
+.badge{padding:2px 8px;border-radius:10px;font-size:.72rem;background:#e8f5e9}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.online{display:inline-block;background:#d5f5e3;color:#1e8449;padding:2px 8px;border-radius:999px;font-size:.72rem;font-weight:700}
+</style>
+</head>
+<body>
+<div class="login" id="login">
+  <div class="box">
+    <div class="online">ONLINE CRM</div>
+    <h1>PrabalHousing Pvt. Ltd.</h1>
+    <p class="sub">Lead CRM · STRONG · STABLE · SECURE<br>Developed by Pranav Prasoon</p>
+    <div class="err" id="err">Invalid login</div>
+    <form onsubmit="return doLogin(event)">
+      <label>Username</label><input id="u" required>
+      <label>Password</label><input id="p" type="password" required>
+      <div class="row"><button class="btn btn-p" type="submit">Login</button></div>
+    </form>
+    <p class="sub" style="margin-top:16px">superadmin / super123<br>admin / admin123<br>rahul / manager1<br>sales1 / sales1</p>
+  </div>
+</div>
+<div class="app" id="app">
+  <div class="header">
+    <div><strong>PrabalHousing Online CRM</strong><div style="font-size:.75rem;opacity:.85">https://hgbsindia.github.io</div></div>
+    <div><span id="who"></span> <button class="btn btn-o" onclick="logout()">Logout</button></div>
+  </div>
+  <div class="nav">
+    <button class="on" data-p="dash" onclick="show('dash',this)">Dashboard</button>
+    <button data-p="leads" onclick="show('leads',this)">Leads</button>
+    <button data-p="add" onclick="show('add',this)">Add Lead</button>
+    <button data-p="reports" onclick="show('reports',this)">Reports</button>
+  </div>
+  <div class="main">
+    <div id="dash">
+      <div class="kpis">
+        <div class="kpi"><b id="k1">0</b>Leads</div>
+        <div class="kpi"><b id="k2">0</b>New</div>
+        <div class="kpi"><b id="k3">Online</b>Workspace</div>
+      </div>
+      <div class="card"><h3>Welcome</h3><p>Online Chrome CRM for PrabalHousing Pvt. Ltd.</p></div>
+    </div>
+    <div id="leads" style="display:none" class="card">
+      <h3>Leads</h3>
+      <div style="overflow:auto"><table><thead><tr><th>Name</th><th>Phone</th><th>Status</th><th>Owner</th><th>Call</th><th>WhatsApp</th></tr></thead><tbody id="lt"></tbody></table></div>
+    </div>
+    <div id="add" style="display:none" class="card">
+      <h3>Add Lead</h3>
+      <form onsubmit="return addLead(event)">
+        <label>Name</label><input id="n" required>
+        <label>Phone</label><input id="ph" required>
+        <label>Status</label>
+        <select id="st"><option>New</option><option>Contacted</option><option>Site Visit</option><option>Won</option><option>Lost</option></select>
+        <div class="row"><button class="btn btn-g" type="submit">Save Lead</button></div>
+      </form>
+    </div>
+    <div id="reports" style="display:none" class="card">
+      <h3>Daily Report</h3>
+      <label>Work completed</label><textarea id="rc" rows="3"></textarea>
+      <div class="row"><button class="btn btn-g" onclick="submitR()">Submit Report</button></div>
+      <div id="rl" style="margin-top:10px"></div>
+    </div>
+  </div>
+</div>
+<script>
+const USERS=[{u:"superadmin",p:"super123",name:"Super Admin",role:"superadmin"},{u:"admin",p:"admin123",name:"Admin",role:"admin"},{u:"rahul",p:"manager1",name:"Rahul Sharma",role:"manager"},{u:"sales1",p:"sales1",name:"Amit Kumar",role:"sales"}];
+const LK="ph_online_leads", RK="ph_online_reports", SK="ph_online_session";
+function leads(){try{return JSON.parse(localStorage.getItem(LK)||"[]")}catch(e){return[]}}
+function saveL(a){localStorage.setItem(LK,JSON.stringify(a))}
+function reps(){try{return JSON.parse(localStorage.getItem(RK)||"[]")}catch(e){return[]}}
+function saveR(a){localStorage.setItem(RK,JSON.stringify(a))}
+function sess(){try{return JSON.parse(localStorage.getItem(SK)||"null")}catch(e){return null}}
+function doLogin(e){e.preventDefault();const u=document.getElementById("u").value.trim().toLowerCase();const p=document.getElementById("p").value;const user=USERS.find(x=>x.u===u&&x.p===p);if(!user){document.getElementById("err").style.display="block";return false}localStorage.setItem(SK,JSON.stringify(user));enter();return false}
+function enter(){const s=sess();if(!s)return;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("who").textContent=s.name+" · "+s.role;render()}
+function logout(){localStorage.removeItem(SK);location.reload()}
+function show(id,btn){["dash","leads","add","reports"].forEach(x=>document.getElementById(x).style.display=x===id?"":"none");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("on"));btn.classList.add("on");render()}
+function addLead(e){e.preventDefault();const s=sess();const a=leads();a.unshift({id:"L"+Date.now(),name:n.value,phone:ph.value,status:st.value,owner:s.u,ts:new Date().toISOString()});saveL(a);n.value="";ph.value="";show("leads",document.querySelector("[data-p=leads]"));return false}
+function submitR(){const s=sess();const a=reps();a.unshift({by:s.name,text:document.getElementById("rc").value,ts:new Date().toLocaleString("en-IN")});saveR(a);document.getElementById("rc").value="";render()}
+function render(){const a=leads();document.getElementById("k1").textContent=a.length;document.getElementById("k2").textContent=a.filter(x=>x.status==="New").length;document.getElementById("lt").innerHTML=a.map(x=>`<tr><td>${x.name}</td><td>${x.phone}</td><td><span class="badge">${x.status}</span></td><td>${x.owner}</td><td><a href="tel:${x.phone}">Call</a></td><td><a href="https://wa.me/91${String(x.phone).replace(/\D/g,"")}" target="_blank">WA</a></td></tr>`).join("")||"<tr><td colspan=6>No leads yet</td></tr>";document.getElementById("rl").innerHTML=reps().map(r=>`<div style="border-left:3px solid var(--navy);padding:8px;margin:8px 0">${r.by} · ${r.ts}<br>${r.text||""}</div>`).join("")||"No reports"}
+if(sess()) enter();
+</script>
+</body>
+</html>
